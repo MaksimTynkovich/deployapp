@@ -1,0 +1,510 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/post.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/btnprev.css' %}">
+
+{% endblock styles %}
+{% block main %}
+
+<div class="container">
+    <div class="post">
+    <a href="/" class="btn-prev">
+        <div class="arrow-prev">
+        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14" fill="none">
+            <path d="M8 1L2 7L8 13" stroke="#D93D3D" stroke-width="1.5"/>
+        </svg>
+            </div>
+        <div class="text-prev">Технологии</div>
+    </a>
+        <div class="post-title">{{post.title | truncatechars:117}}</div>
+        <div class="post-date">
+            {% if post.time_create|date:"j m Y" == time %}
+            Сегодня
+            {% elif post.time_create|date:"j m Y" == day %}
+            Вчера
+            {% else %}
+            {{post.time_create | date:"j"}} <span id="month">{{post.time_create | date:"E"}}</span>,
+            {{post.time_create | date:"Y"}}
+            {% endif %}
+        </div>
+            {% if post.author == None %}
+            {% else %}
+        <div class="author">
+            Автор: {{post.author}}
+        </div>
+            {% endif %}
+        <div class="post-content">
+            {{post.content | safe}}
+        </div>
+    </div>
+
+    <div class="post-information">
+        <div class="post-tag"><span>{{post.category}}</span></div>
+
+        <div class="post-stats">
+            <div class="post-stats-inner">
+                <div class="post-stats-feedback">
+
+                        <div class="post-stats-feedback-like">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="19" viewBox="0 0 20 19" fill="none">
+                                <path d="M5.87565 1.5C3.09128 1.5 0.833984 3.77172 0.833984 6.5739C0.833984 11.6478 6.79232 16.2604 10.0007 17.3333C13.209 16.2604 19.1673 11.6478 19.1673 6.5739C19.1673 3.77172 16.91 1.5 14.1257 1.5C12.4207 1.5 10.9127 2.35196 10.0007 3.65595C9.53575 2.98952 8.91814 2.44563 8.2001 2.07035C7.48207 1.69506 6.68475 1.49943 5.87565 1.5Z" stroke="#646A6F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <div class="post-stats-feedback-like-count">240</div>
+                        </div>
+
+                    <div class="post-stats-feedback-comment">
+                        <svg id="btn-open" xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20" fill="none">
+                            <path d="M8.18772 16.0603L7.96718 15.8354H7.65217H0.75V0.75H21.25V15.8354H14.3478H14.0328L13.8123 16.0603L11 18.9287L8.18772 16.0603Z" stroke="#646A6F" stroke-width="1.5"/>
+                        </svg>
+                        <div class="post-stats-feedback-comment-count">{{comments}}</div>
+                    </div>
+
+                </div>
+
+                <div class="post-stats-share">
+                    <div class="post-stats-share-favorites">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 50 50" width="26px" height="27px"><path d="M 12.8125 2 C 12.335938 2.089844 11.992188 2.511719 12 3 L 12 47 C 11.996094 47.359375 12.1875 47.691406 12.496094 47.871094 C 12.804688 48.054688 13.1875 48.054688 13.5 47.875 L 25 41.15625 L 36.5 47.875 C 36.8125 48.054688 37.195313 48.054688 37.503906 47.871094 C 37.8125 47.691406 38.003906 47.359375 38 47 L 38 3 C 38 2.449219 37.550781 2 37 2 L 13 2 C 12.96875 2 12.9375 2 12.90625 2 C 12.875 2 12.84375 2 12.8125 2 Z M 14 4 L 36 4 L 36 45.25 L 25.5 39.125 C 25.191406 38.945313 24.808594 38.945313 24.5 39.125 L 14 45.25 Z"/></svg>
+                    </div>
+                        <div class="post-stats-share-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 22 24" fill="none">
+                            <path d="M12.3695 4.23672H12.1195V4.48672V15.5063H9.88041V4.48672V4.23672H9.63041H7.41971L11 -0.127791L14.5802 4.23672H12.3695ZM19.4674 10.7476V10.4976H19.2174H16.7282V8.49325H20.5869C20.8907 8.49325 21.1781 8.60379 21.3867 8.79451C21.5945 8.98454 21.7065 9.23722 21.7065 9.49542V23.2693C21.7065 23.5275 21.5945 23.7802 21.3867 23.9702C21.1781 24.161 20.8907 24.2715 20.5869 24.2715H1.41302C1.10922 24.2715 0.82188 24.161 0.613286 23.9702C0.40544 23.7802 0.293457 23.5275 0.293457 23.2693V9.49542C0.293457 9.23722 0.405439 8.98454 0.613286 8.79451C0.821881 8.60379 1.10923 8.49325 1.41302 8.49325H5.27172V10.4976H2.78259H2.53259V10.7476V22.0172V22.2672H2.78259H19.2174H19.4674V22.0172V10.7476Z" fill="#646A6F" stroke="#F6F6F7" stroke-width="0.5"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr style="border: 1px solid #BFC6CE; width: 830px; margin-top: 20px">
+        <div class="leave-comment" id="btn-open-2">
+            <div class="leave-comment-svg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M3.06491 19.4345L3.2799 18.423L3.28003 18.4223L4.08997 14.3504L4.08998 14.3504L4.13293 14.1335L15.8294 2.43784L15.8296 2.43761C16.1062 2.15731 16.4357 1.93457 16.7988 1.78222C17.162 1.62989 17.5517 1.55097 17.9455 1.55C18.3393 1.55078 18.7292 1.62954 19.0924 1.78175C19.4557 1.93397 19.7853 2.15663 20.0621 2.43689L20.0626 2.43741C20.3436 2.71355 20.5668 3.0429 20.7192 3.40623C20.8715 3.76956 20.95 4.1596 20.95 4.55358C20.95 4.94756 20.8715 5.33759 20.7192 5.70092C20.5668 6.06425 20.3436 6.3936 20.0626 6.66974L20.0623 6.67005L8.36581 18.3658L8.14975 18.4094L8.14961 18.4095L4.07782 19.2194L4.07719 19.2195L3.06491 19.4345ZM19.0906 5.70061L19.0913 5.69983C19.4577 5.33347 19.6463 4.94613 19.6463 4.55367C19.6463 4.16121 19.4577 3.77404 19.0913 3.40805C18.7233 3.03926 18.3351 2.86111 17.9455 2.86111C17.5557 2.86111 17.1683 3.0393 16.7996 3.40807L16.7988 3.40883L16.2895 3.9404L16.2556 3.97574L16.2902 4.01035L18.4891 6.20846L18.5236 6.24303L18.559 6.20922L19.0906 5.70061ZM15.3207 4.98132L15.2854 4.94595L15.25 4.98131L6.29549 13.9344L6.24685 13.983L6.30811 14.0143C7.24474 14.4922 8.00661 15.2535 8.48516 16.1898L8.51644 16.251L8.56503 16.2024L17.5181 7.25012L17.5534 7.21478L17.5181 7.17942L15.3207 4.98132ZM5.40185 15.1272L5.34599 15.1047L5.33416 15.1637L4.84775 17.5928L4.83302 17.6664L4.90658 17.6517L7.33641 17.166L7.39548 17.1542L7.373 17.0983C7.1942 16.6539 6.92743 16.2502 6.5887 15.9115C6.24997 15.5727 5.84627 15.3059 5.40185 15.1272Z" fill="#646A6F" stroke="#F6F6F7" stroke-width="0.1"/>
+                    <rect x="1.5" y="21.75" width="21" height="1" fill="#646A6F"/>
+                </svg>
+            </div>
+            <div class="leave-comment-content">{{user}}</div>
+        </div>
+        <hr style="border: 1px solid #BFC6CE; width: 830px; margin-top: 20px">
+    </div>
+
+    <div class="post-donate">
+        <div class="post-donate-block1">
+            <div class="post-donate-block1-title">
+                Нам очень нужна ваша помощь!
+            </div>
+
+            <div class="post-donate-block1-link">
+                <div class="post-donate-block1-link-content">
+                    <a target="_blank" href="https://www.donationalerts.com/r/newspacepress">поддержать проект</a>
+                </div>
+                <div class="post-donate-block1-link-svg">
+                    <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="17" viewBox="0 0 19 17" fill="none">
+                        <path d="M0 8.5H17" stroke="#D93D3D" stroke-width="1.5"/>
+                        <path d="M9.27295 16L17.0002 8.5L9.27295 1" stroke="#D93D3D" stroke-width="1.5"/>
+                    </svg></a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="post-donate-block2">
+            Пожалуйста, поддержите нас, чтобы мы могли и дальше делиться с вами самыми свежими и интересными новостями.
+        </div>
+    </div>
+
+    <hr style="border: 1px solid #BFC6CE; width: 830px; margin-top: 20px">
+
+    <nav class="comment-nav">
+        <div class="comment-container">
+            <div class="comment-title">
+                <div class="comment-title-h1">Комментарии ({{comments}})</div>
+                <div id="btn-close" class="comment-title-svg"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <rect width="29.4507" height="1.47254" transform="matrix(0.709512 0.704693 -0.709512 0.704693 1.04492 0.208496)" fill="#151515"/>
+                <rect width="29.4507" height="1.47254" transform="matrix(0.709512 -0.704693 0.709512 0.704693 0.0605469 20.7539)" fill="#151515"/>
+                </svg>
+                </div>
+            </div>
+
+            <form class="comment-form" id="comment" action="{% url 'post' post.slug %}" method="POST">
+                {% csrf_token %}
+                <label>
+                <input name="text" class="comment-input" id="message" placeholder="Ваш комментарий" required=""/>
+                    <div class="comment-btn-submit">
+                            {% if request.user.is_authenticated %}
+                            <div class="comment-btn-cancel">отмена</div> <button type="submit" id="form-submit" class="button-submit">Отправить</button>
+                            {% else %}
+                            <a href="{% url 'login' %}" id="form-submit" class="main-button">Авторизируйтесь</a>
+                            {% endif %}
+                </div>
+                </label>
+            </form>
+
+                {% for comment in post.blog_comments.all %}
+
+                    <div class="comment-content">
+                        <div class="comment-info">
+                            <div class="comment-user-image">
+                                <img height="40" width="40" src="{{comment.user.profile.avatar.url}}" alt="">
+                            </div>
+                            <div class="comment-user-info">
+                                <div class="comment-user-username">{{comment.user.username}}</div>
+                                <div class="comment-user-date">{{comment.created_date}}</div>
+
+<!--                                <div class="comment-user-date">{{comment.created_date | date:"f d m Y" }}</div>-->
+<!--                                {{hours}}:{{minutes}} {{time}}-->
+
+                            </div>
+                        </div>
+
+                        <div class="comment-user-text">{{comment.text}}</div>
+
+                        <div class="comment-other-inner">
+                            <div class="comment-btn-response" id="response-btn-{{comment.id}}">ответить</div>
+
+                            <div class="like-btn-comment">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="17" viewBox="0 0 20 19" fill="none">
+                                    <path d="M5.87565 1.5C3.09128 1.5 0.833984 3.77172 0.833984 6.5739C0.833984 11.6478 6.79232 16.2604 10.0007 17.3333C13.209 16.2604 19.1673 11.6478 19.1673 6.5739C19.1673 3.77172 16.91 1.5 14.1257 1.5C12.4207 1.5 10.9127 2.35196 10.0007 3.65595C9.53575 2.98952 8.91814 2.44563 8.2001 2.07035C7.48207 1.69506 6.68475 1.49943 5.87565 1.5Z" stroke="#646A6F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <div class="like-count">13</div>
+                            </div>
+
+                        </div>
+
+                            <form class="submit-reply" id="comment-reply-{{comment.id}}" action="{% url 'add_reply' post.id comment.id %}" method="POST">
+                                <div class="submit-reply-inner">
+                                {% csrf_token %}
+                                <div class="hr-vertical"></div>
+                                    <div class="submit-info">
+
+                                        <div class="reply-user-info">
+                                            <div class="reply-user-image">
+                                                <img height="40" width="40" src="{{user.profile.avatar.url}}" alt="">
+                                            </div>
+
+                                            <div class="reply-user-username">
+                                                {{user.username}}
+                                            </div>
+
+                                        </div>
+
+                                        <div class="input-block">
+                                            <textarea class="textarea-message" name="text" rows="5" cols="40" id="message" placeholder="Ваш комментарий"></textarea>
+                                        </div>
+
+                                        <div class="comment-btn-reply">
+                                            {% if request.user.is_authenticated %}
+                                            <div class="btns-reply">
+                                                <div class="comment-btn-cancel">отмена</div>
+                                                <button type="submit" id="form-submit" class="button-submit">Отправить</button>
+                                            </div>
+                                            {% else %}
+                                            <a href="{% url 'login' %}" id="form-submit" class="main-button reply-button">Авторизируйтесь</a>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                    </div>
+
+                <script>
+                    const btnResponse{{comment.id}} = document.getElementById('response-btn-{{comment.id}}')
+                    const commentblock{{comment.id}} = document.getElementById('comment-reply-{{comment.id}}')
+                    btnResponse{{comment.id}}.addEventListener("click", function () {
+                        commentblock{{comment.id}}.style.display == 'block' ? commentblock{{comment.id}}.style.display = 'none' : commentblock{{comment.id}}.style.display = 'block'
+                    })
+                </script>
+                {% for reply in comment.comment_replies.all %}
+
+                    <div class="reply-comment">
+                        <div class="reply-inner">
+                            <div id="hr-reply-{{reply.id}}" class="hr-vertical-reply"></div>
+
+                        <div class="reply-content">
+
+                            <div class="reply-user-info">
+                                <img width="40" height="40" src="{{reply.user.profile.avatar.url}}" alt="">
+                                <div class="reply-user-other-info">
+                                    <div class="comment-reply-username">{{reply.user.username}}</div>
+                                    <div class="comment-reply-date">{{reply.created_date}}</div>
+                                </div>
+                            </div>
+                            <div class="reply-user-text" id="reply-user-id-{{reply.id}}">
+                                {{reply.text}}
+                            </div>
+
+                            <div class="reply-other-inner">
+
+                            <div class="comment-btn-response-2" style="margin-left: 15px; margin-top: 18px" id="response-btn-{{reply.id}}-2">ответить</div>
+
+                                <div class="like-btn-reply">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="17" viewBox="0 0 20 19" fill="none">
+                                        <path d="M5.87565 1.5C3.09128 1.5 0.833984 3.77172 0.833984 6.5739C0.833984 11.6478 6.79232 16.2604 10.0007 17.3333C13.209 16.2604 19.1673 11.6478 19.1673 6.5739C19.1673 3.77172 16.91 1.5 14.1257 1.5C12.4207 1.5 10.9127 2.35196 10.0007 3.65595C9.53575 2.98952 8.91814 2.44563 8.2001 2.07035C7.48207 1.69506 6.68475 1.49943 5.87565 1.5Z" stroke="#646A6F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <div class="like-count">0</div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        </div>
+
+                        <form class="submit-reply" id="comment-reply-{{reply.id}}-2" action="{% url 'add_reply' post.id comment.id %}" method="POST">
+                            <div class="submit-reply-inner">
+                                {% csrf_token %}
+                                <div class="hr-vertical"></div>
+                                <div class="submit-info">
+
+                                    <div class="reply-user-info">
+                                        <div class="reply-user-image">
+                                            <img height="40" width="40" src="{{user.profile.avatar.url}}" alt="">
+                                        </div>
+
+                                        <div class="reply-user-username">
+                                            {{user.username}}
+                                        </div>
+
+                                    </div>
+
+                                    <div class="input-block">
+                                        <textarea class="textarea-message" name="text" rows="5" cols="40" id="message" placeholder="Ваш комментарий"></textarea>
+                                    </div>
+
+                                    <div class="comment-btn-reply">
+                                        {% if request.user.is_authenticated %}
+                                        <div class="btns-reply">
+                                            <div class="comment-btn-cancel">отмена</div>
+                                            <button type="submit" id="form-submit" class="button-submit">Отправить</button>
+                                        </div>
+                                        {% else %}
+                                        <a href="{% url 'login' %}" id="form-submit" class="main-button reply-button">Авторизируйтесь</a>
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+            <script>
+                const btnResponse2{{reply.id}} = document.getElementById('response-btn-{{reply.id}}-2')
+                const commentblock2{{reply.id}} = document.getElementById('comment-reply-{{reply.id}}-2')
+                btnResponse2{{reply.id}}.addEventListener("click", function () {
+                    commentblock2{{reply.id}}.style.display == 'block' ? commentblock2{{reply.id}}.style.display = 'none' : commentblock2{{reply.id}}.style.display = 'block'
+                })
+
+                const context{{reply.id}} = document.getElementById('reply-user-id-{{reply.id}}')
+                const hr{{reply.id}} = document.getElementById('hr-reply-{{reply.id}}')
+
+                const res{{reply.id}} = context{{reply.id}}.clientHeight
+                const result{{reply.id}} = res{{reply.id}} + 110
+                hr{{reply.id}}.style.height = `${result{{reply.id}}}px`
+            </script>
+                {% endfor %}
+            <form class="submit-reply" id="comment-reply-{{comment.id}}" action="{% url 'add_reply' post.id comment.id %}" method="POST">
+                <div class="submit-reply-inner">
+                    {% csrf_token %}
+                    <div class="hr-vertical"></div>
+                    <div class="submit-info">
+
+                        <div class="reply-user-info">
+                            <div class="reply-user-image">
+                                <img height="40" width="40" src="{{user.profile.avatar.url}}" alt="">
+                            </div>
+
+                            <div class="reply-user-username">
+                                {{user.username}}
+                            </div>
+
+                        </div>
+
+                        <div class="input-block">
+                            <textarea class="textarea-message" name="text" rows="5" cols="40" id="message" placeholder="Ваш комментарий"></textarea>
+                        </div>
+
+                        <div class="comment-btn-reply">
+                            {% if request.user.is_authenticated %}
+                            <div class="btns-reply">
+                                <div class="comment-btn-cancel">отмена</div>
+                                <button type="submit" id="form-submit" class="button-submit">Отправить</button>
+                            </div>
+                            {% else %}
+                            <a href="{% url 'login' %}" id="form-submit" class="main-button reply-button">Авторизируйтесь</a>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+                {% endfor %}
+
+        </div>
+    </nav>
+
+{% if posts_more %}
+    <div class="read_more">
+        <div class="read_more-title">Читайте далее</div>
+        <div class="posts">
+        {% for post in posts_more %}
+        <div class="read_more-item">
+            <div class="read_more-img">
+                <a href="{{post.get_absolute_url}}">
+                    {% if post.photo %}
+                    <img src="{{ post.photo.url }}" width="373" height="300" alt="...">
+                    {% else %}
+                    <img src="{{ post.photo.url }}" width="373" height="300" alt="...">
+                    {% endif %}
+                </a>
+            </div>
+            <div class="read_more-info">
+                {% if post.category.slug is None %}
+                <a href="#" class="recommendations_tag">Другое</a>
+                {% else %}
+                <a href='{% url 'category' post.category.slug %}' class="read_more-tag">{{post.category}}</a>
+                {% endif %}
+                <div class="read_more-date">
+                    {% if post.time_create|date:"j m Y" == time %}
+                    Сегодня
+                    {% elif post.time_create|date:"j m Y" == day %}
+                    Вчера
+                    {% else %}
+                    {{post.time_create | date:"j"}} <span id="month">{{post.time_create | date:"E"}}</span>,
+                    {{post.time_create | date:"Y"}}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="read_more-title"><a href="{{post.get_absolute_url}}">{{post.title | truncatechars:74}}</a></div>
+        </div>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+{% else %}
+{% endif %}
+
+<footer>
+    <div class="container">
+        <div class="footer__inner">
+        <div class="footer-block-1">
+            <div class="footer-block-1-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="125" height="43" viewBox="0 0 127 44" fill="none">
+                    <path d="M24.3352 17.2771H16.532V18.8721H24.3352V17.2771Z" fill="#151515"/>
+                    <path d="M16.532 26.6821L24.3352 26.7371V25.1421H18.0707V22.0071H22.7966V20.4121H16.532V26.6821Z" fill="#151515"/>
+                    <path d="M69.8535 17.3044H77.6568V22.0344H71.3922V26.7095H69.8535V20.4394H76.1181V18.8994H69.8535V17.3044Z" fill="#151515"/>
+                    <path d="M118.358 17.3044H126.162V18.8994H119.897L118.358 17.3044Z" fill="#151515"/>
+                    <path d="M118.358 20.4395H126.162V22.0345H119.897V25.1695H126.162V26.7095H118.358V20.4395Z" fill="#151515"/>
+                    <path d="M109.993 17.2771H102.19V26.6821L109.993 26.7371V25.1421H103.729V18.8721H109.993V17.2771Z" fill="#151515"/>
+                    <path d="M86.022 26.7371L89.9236 17.2771L93.8252 26.6821L89.9236 24.3171L86.022 26.7371Z" fill="#151515"/>
+                    <path d="M8.2065 17.3044V26.7095H8.18891L6.66783 25.2927L0.373047 19.4296L0.377442 17.3297L6.66783 23.1889V17.3044H8.2065Z" fill="#151515"/>
+                    <path d="M44.9202 17.3374L41.1214 24.973L40.2877 26.6483L40.2311 26.6769L40.1745 26.6483L39.3409 24.973L37.8682 22.0129L36.3955 24.973L35.5618 26.6483L35.5052 26.6769L35.4486 26.6483L34.615 24.973L30.8162 17.3374H32.5966L35.5052 23.1844L36.978 20.2232L35.5421 17.3374H37.3225L37.8682 18.4347L38.7584 20.2232L40.2311 23.1844L43.1398 17.3374H44.9202Z" fill="#151515"/>
+                    <path d="M60.9335 26.0027C60.8296 28.4035 59.6729 31.0512 57.4962 33.8721C55.1223 36.9488 51.4608 40.3275 46.6124 43.9173H45.6677L45.7688 43.8442C45.782 43.8343 45.8414 43.7941 45.9013 43.7529L45.9919 43.6907L46.0227 43.6693H46.026C55.3437 36.8146 60.1746 30.8636 60.384 25.9785C60.4939 23.4667 59.4234 21.259 57.1143 19.2306C56.8703 19.0161 56.5736 18.7697 56.2598 18.509C53.9375 16.579 50.0502 13.3494 50.4816 9.26898C50.9322 4.99493 55.9982 1.79613 59.48 0.0839844H60.7439L60.7477 0.0927844L60.4983 0.208284C58.8541 0.967834 56.4829 2.21743 54.5244 3.85753C52.3999 5.63568 51.224 7.47599 51.0289 9.32619C50.6288 13.1162 54.3744 16.2281 56.612 18.0871C56.9286 18.3506 57.228 18.5992 57.4781 18.8186C59.8894 20.9328 61.05 23.3506 60.9335 26.0027Z" fill="#D93D3D" stroke="#D93D3D" stroke-width="1.5" stroke-miterlimit="10"/>
+                </svg>
+            </div>
+
+            <div class="footer-block-1-title">ПОДПИСАТЬСЯ НА НАШИ ОБНОВЛЕНИЯ</div>
+
+            <div class="footer-block-1-input">
+                <input type="text" placeholder="E-mail">
+            </div>
+
+            <div class="footer-block-1-soc-links">
+                <div class="footer-block-1-soc-link"><a target="_blank" href="https://www.facebook.com/newspacepress/"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
+                    <path d="M20.0025 10.0625C20.0025 4.505 15.525 0 10.0025 0C4.4775 0.00125 0 4.505 0 10.0638C0 15.085 3.6575 19.2475 8.4375 20.0025V12.9713H5.9V10.0638H8.44V7.845C8.44 5.32375 9.93375 3.93125 12.2175 3.93125C13.3125 3.93125 14.4563 4.1275 14.4563 4.1275V6.6025H13.195C11.9538 6.6025 11.5663 7.37875 11.5663 8.175V10.0625H14.3388L13.8963 12.97H11.565V20.0013C16.345 19.2463 20.0025 15.0838 20.0025 10.0625Z" fill="#646A6F"/>
+                </svg></a></div>
+                <div class="footer-block-1-soc-link">
+                    <a href="https://www.instagram.com/newspace.press/" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+                    <g clip-path="url(#clip0_1875_2360)">
+                        <path d="M6.87744 6.625H9.07541C8.49153 6.78537 7.95774 7.09495 7.52757 7.52513C7.09739 7.9553 6.78781 8.48909 6.62744 9.07297V6.875C6.62744 6.8087 6.65378 6.74511 6.70066 6.69822C6.74755 6.65134 6.81114 6.625 6.87744 6.625ZM11.1078 6.67912C11.0488 6.65948 10.9893 6.64143 10.9295 6.625H11.1248C11.1189 6.64294 11.1132 6.66098 11.1078 6.67912ZM13.3233 8.89466C13.3415 8.88926 13.3595 8.88358 13.3774 8.8776V9.07297C13.361 9.01307 13.3429 8.95361 13.3233 8.89466ZM12.4773 12.4749C12.9102 12.0419 13.218 11.5073 13.3774 10.9271V13.125C13.3774 13.1913 13.3511 13.2549 13.3042 13.3018C13.2573 13.3487 13.1937 13.375 13.1274 13.375H10.9295C11.5097 13.2156 12.0444 12.9078 12.4773 12.4749ZM8.05795 12.9101C8.37168 13.1198 8.71546 13.2761 9.07542 13.375H6.87744C6.81114 13.375 6.74755 13.3487 6.70067 13.3018C6.65378 13.2549 6.62744 13.1913 6.62744 13.125V10.927C6.66583 11.0668 6.713 11.2045 6.76886 11.3394C7.03377 11.9789 7.48237 12.5256 8.05795 12.9101Z" fill="#646A6F" stroke="#F6F6F7" stroke-width="2"/>
+                        <path d="M10.0024 12C11.107 12 12.0024 11.1046 12.0024 10C12.0024 8.89543 11.107 8 10.0024 8C8.89787 8 8.00244 8.89543 8.00244 10C8.00244 11.1046 8.89787 12 10.0024 12Z" fill="#646A6F"/>
+                        <path d="M12.5024 7C12.7786 7 13.0024 7.22386 13.0024 7.5C13.0024 7.77614 12.7786 8 12.5024 8C12.2263 8 12.0024 7.77614 12.0024 7.5C12.0024 7.22386 12.2263 7 12.5024 7Z" fill="#646A6F"/>
+                        <path d="M10.0024 0C8.02463 0 6.09124 0.58649 4.44674 1.6853C2.80225 2.78412 1.52053 4.3459 0.763651 6.17317C0.00677422 8.00043 -0.191259 10.0111 0.194593 11.9509C0.580445 13.8907 1.53285 15.6725 2.93138 17.0711C4.3299 18.4696 6.11173 19.422 8.05154 19.8079C9.99135 20.1937 12.002 19.9957 13.8293 19.2388C15.6565 18.4819 17.2183 17.2002 18.3171 15.5557C19.416 13.9112 20.0024 11.9778 20.0024 10C20.0024 7.34784 18.9489 4.8043 17.0735 2.92893C15.1982 1.05357 12.6546 0 10.0024 0V0ZM15.6274 13.125C15.6274 13.788 15.3641 14.4239 14.8952 14.8928C14.4264 15.3616 13.7905 15.625 13.1274 15.625H6.87745C6.21441 15.625 5.57852 15.3616 5.10968 14.8928C4.64084 14.4239 4.37745 13.788 4.37745 13.125V6.875C4.37745 6.21196 4.64084 5.57607 5.10968 5.10723C5.57852 4.63839 6.21441 4.375 6.87745 4.375H13.1274C13.7905 4.375 14.4264 4.63839 14.8952 5.10723C15.3641 5.57607 15.6274 6.21196 15.6274 6.875V13.125Z" fill="#646A6F"/>
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_1875_2360">
+                            <rect width="20" height="20" fill="white" transform="translate(0.00244141)"/>
+                        </clipPath>
+                    </defs>
+                </svg></a></div>
+                <div class="footer-block-1-soc-link">
+                    <a href="https://twitter.com/newspacepress" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+                    <path d="M10.0024 0C4.48012 0 0.00244141 4.47768 0.00244141 10C0.00244141 15.5223 4.48012 20 10.0024 20C15.5248 20 20.0024 15.5223 20.0024 10C20.0024 4.47768 15.5248 0 10.0024 0ZM14.8082 7.53795C14.8149 7.64286 14.8149 7.75223 14.8149 7.85938C14.8149 11.1362 12.3194 14.9107 7.75914 14.9107C6.35289 14.9107 5.04932 14.5022 3.9511 13.7991C4.15199 13.8214 4.34396 13.8304 4.54932 13.8304C5.71003 13.8304 6.777 13.4375 7.62744 12.7723C6.53816 12.75 5.62298 12.0357 5.31048 11.0536C5.69217 11.1094 6.03592 11.1094 6.42878 11.0089C5.8679 10.895 5.36377 10.5904 5.00203 10.1468C4.64029 9.70331 4.44326 9.14823 4.44441 8.57589V8.54464C4.77253 8.72991 5.15869 8.84375 5.56271 8.85938C5.22307 8.63302 4.94454 8.32636 4.7518 7.96658C4.55906 7.60681 4.45807 7.20503 4.4578 6.79688C4.4578 6.33482 4.57833 5.91295 4.79485 5.54688C5.4174 6.31325 6.19425 6.94005 7.07491 7.38653C7.95556 7.83301 8.92032 8.08918 9.90646 8.13839C9.55601 6.45313 10.8149 5.08929 12.3283 5.08929C13.0426 5.08929 13.6855 5.38839 14.1386 5.87054C14.6989 5.76562 15.2346 5.5558 15.7123 5.27455C15.527 5.84821 15.1386 6.33259 14.623 6.63839C15.123 6.58482 15.6051 6.44643 16.0515 6.25223C15.7145 6.74777 15.2926 7.1875 14.8082 7.53795Z" fill="#646A6F"/>
+                </svg>
+                    </a>
+                </div>
+                <div class="footer-block-1-soc-link">
+                    <a href="https://www.youtube.com/c/NewSpaceChannel" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M11.6698 9.82604L9.33021 8.73438C9.12604 8.63958 8.95833 8.74583 8.95833 8.97187V11.0281C8.95833 11.2542 9.12604 11.3604 9.33021 11.2656L11.6687 10.174C11.874 10.0781 11.874 9.92188 11.6698 9.82604ZM10 0C4.47708 0 0 4.47708 0 10C0 15.5229 4.47708 20 10 20C15.5229 20 20 15.5229 20 10C20 4.47708 15.5229 0 10 0ZM10 14.0625C4.88125 14.0625 4.79167 13.601 4.79167 10C4.79167 6.39896 4.88125 5.9375 10 5.9375C15.1187 5.9375 15.2083 6.39896 15.2083 10C15.2083 13.601 15.1187 14.0625 10 14.0625Z" fill="#646A6F"/>
+                </svg>
+                    </a>
+                </div>
+                <div class="footer-block-1-soc-link">
+                    <a href="https://vk.com/newspacepress" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+                    <path d="M10.0024 0C4.47953 0 0.00244141 4.47708 0.00244141 10C0.00244141 15.5229 4.47953 20 10.0024 20C15.5254 20 20.0024 15.5229 20.0024 10C20.0024 4.47708 15.5254 0 10.0024 0ZM13.8483 11.2823C13.8483 11.2823 14.7326 12.1552 14.9504 12.5604C14.9566 12.5688 14.9597 12.5771 14.9618 12.5812C15.0504 12.7302 15.0712 12.8458 15.0274 12.9323C14.9545 13.076 14.7045 13.1469 14.6191 13.1531H13.0566C12.9483 13.1531 12.7212 13.125 12.4462 12.9354C12.2347 12.7875 12.0264 12.5448 11.8233 12.3083C11.5202 11.9562 11.2577 11.6521 10.9931 11.6521C10.9595 11.652 10.9261 11.6573 10.8941 11.6677C10.6941 11.7323 10.4379 12.0177 10.4379 12.7781C10.4379 13.0156 10.2504 13.1521 10.1181 13.1521H9.40244C9.15869 13.1521 7.8889 13.0667 6.7639 11.8802C5.38682 10.4271 4.14723 7.5125 4.13682 7.48542C4.05869 7.29687 4.22015 7.19583 4.39619 7.19583H5.97432C6.18473 7.19583 6.25348 7.32396 6.3014 7.4375C6.35765 7.56979 6.5639 8.09583 6.90244 8.6875C7.4514 9.65208 7.78786 10.0437 8.05765 10.0437C8.10824 10.0432 8.15792 10.0303 8.20244 10.0062C8.55452 9.81042 8.4889 8.55521 8.47327 8.29479C8.47327 8.24583 8.47223 7.73333 8.29202 7.4875C8.16286 7.30937 7.94307 7.24167 7.80973 7.21667C7.8637 7.1422 7.9348 7.08182 8.01702 7.04062C8.25869 6.91979 8.69411 6.90208 9.1264 6.90208H9.36703C9.83578 6.90833 9.95661 6.93854 10.1264 6.98125C10.4701 7.06354 10.4774 7.28542 10.4472 8.04479C10.4379 8.26042 10.4285 8.50417 10.4285 8.79167C10.4285 8.85417 10.4254 8.92083 10.4254 8.99167C10.4149 9.37812 10.4024 9.81667 10.6754 9.99687C10.711 10.0192 10.7521 10.0311 10.7941 10.0312C10.8889 10.0312 11.1743 10.0312 11.9472 8.70521C12.1856 8.27839 12.3927 7.83487 12.567 7.37812C12.5826 7.35104 12.6285 7.26771 12.6826 7.23542C12.7226 7.21504 12.7669 7.20467 12.8118 7.20521H14.667C14.8691 7.20521 15.0076 7.23542 15.0337 7.31354C15.0795 7.4375 15.0254 7.81562 14.1785 8.9625L13.8004 9.46146C13.0326 10.4677 13.0326 10.5188 13.8483 11.2823Z" fill="#646A6F"/>
+                </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-block-1-copyright">
+                <div class="footer-block-1-copyright-svg"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path d="M6 0.75C3.10078 0.75 0.75 3.10078 0.75 6C0.75 8.89922 3.10078 11.25 6 11.25C8.89922 11.25 11.25 8.89922 11.25 6C11.25 3.10078 8.89922 0.75 6 0.75ZM6 10.3594C3.59297 10.3594 1.64062 8.40703 1.64062 6C1.64062 3.59297 3.59297 1.64062 6 1.64062C8.40703 1.64062 10.3594 3.59297 10.3594 6C10.3594 8.40703 8.40703 10.3594 6 10.3594ZM6.06562 4.1168C6.68672 4.1168 7.10859 4.51289 7.15547 5.09414C7.15898 5.14336 7.2 5.18086 7.24922 5.18086H7.91367C7.94414 5.18086 7.96875 5.15625 7.96875 5.12578C7.96875 4.10977 7.16719 3.39844 6.06211 3.39844C4.77422 3.39844 4.03125 4.26797 4.03125 5.70469V6.31758C4.03125 7.74375 4.77422 8.60156 6.06211 8.60156C7.16367 8.60156 7.96875 7.9125 7.96875 6.94453C7.96875 6.91406 7.94414 6.88945 7.91367 6.88945H7.24805C7.19883 6.88945 7.15898 6.92695 7.1543 6.975C7.10508 7.51523 6.68437 7.88672 6.06445 7.88672C5.29922 7.88672 4.86797 7.32539 4.86797 6.32109V5.70469C4.86914 4.68516 5.30156 4.1168 6.06562 4.1168Z" fill="#BFC6CE"/>
+                </svg></div>
+                <div class="footer-block-1-copyright-text">Copyright NewSpace</div>
+            </div>
+
+        </div>
+
+        <div class="footer-block-2">
+            <div class="footer-block-2-top">
+                <div class="footer-block-2-column-1">
+                    <div class="footer-block-2-cell cell-1"><a href="#">Астронавтика</a></div>
+                    <div class="footer-block-2-cell cell-2"><a href="#">Наука и космос</a></div>
+                    <div class="footer-block-2-cell cell-3"><a href="#">Технологии</a></div>
+                </div>
+                <div class="footer-block-2-column-2">
+                    <div class="footer-block-2-cell cell-1"><a href="#">NewSpace Media</a></div>
+                    <div class="footer-block-2-cell cell-2"><a href="#">Запуски</a></div>
+                    <div class="footer-block-2-cell cell-3"><a href="#">События</a></div>
+                </div>
+                <div class="footer-block-2-column-3">
+                    <div class="footer-block-2-cell cell-1"><a href="#">О нас</a></div>
+                    <div class="footer-block-2-cell cell-2"><a href="#">Партнеры</a></div>
+                    <div class="footer-block-2-cell cell-3"><a href="#">Реклама</a></div>
+                </div>
+            </div>
+
+            <div class="footer-block-2-bottom">
+                <div class="post-donate-block2-bottom-link">
+                    <div class="post-donate-block1-link-content">
+                        <a target="_blank" href="https://www.donationalerts.com/r/newspacepress">поддержать проект</a>
+                    </div>
+                    <div class="post-donate-block1-link-svg">
+                        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="17" viewBox="0 0 19 17" fill="none">
+                            <path d="M0 8.5H17" stroke="#D93D3D" stroke-width="1.5"/>
+                            <path d="M9.27295 16L17.0002 8.5L9.27295 1" stroke="#D93D3D" stroke-width="1.5"/>
+                        </svg></a>
+                    </div>
+                </div>
+
+                <div class="footer-shop-link">
+                    <div class="footer-shop-link-svg"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16" fill="none">
+                        <path d="M10.6036 4.9335V5.0335H10.7036H12.9258C13.0946 5.0335 13.2573 5.10287 13.3777 5.22753C13.4983 5.35231 13.5666 5.52226 13.5666 5.70016V14.1335C13.5666 14.9272 12.9437 15.5668 12.1851 15.5668H1.81473C1.05614 15.5668 0.433252 14.9272 0.433252 14.1335V5.70016C0.433252 5.52226 0.501565 5.35231 0.622126 5.22753C0.742574 5.10287 0.90519 5.0335 1.07399 5.0335H3.29622H3.39621V4.9335V4.16683C3.39621 2.10509 5.01614 0.433496 6.99992 0.433496C8.9837 0.433496 10.6036 2.10509 10.6036 4.16683V4.9335ZM9.22214 5.0335H9.32214V4.9335V4.16683C9.32214 2.8468 8.28355 1.76683 6.99992 1.76683C5.71629 1.76683 4.6777 2.8468 4.6777 4.16683V4.9335V5.0335H4.7777H9.22214ZM1.81473 6.36683H1.71473V6.46683V14.1335V14.2335H1.81473H12.1866H12.2866L12.2866 14.1335L12.2851 6.46681L12.2851 6.36683H12.1851H10.7036H10.6036V6.46683V7.90016H9.32214V6.46683V6.36683H9.22214H4.7777H4.6777V6.46683V7.90016H3.39621V6.46683V6.36683H3.29622H1.81473Z" fill="#151515" stroke="#F6F6F7" stroke-width="0.2"/>
+                    </svg></div>
+                    <div class="footer-shop-link-content">МАГАЗИН</div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+    </div>
+</footer>
+
+<script src="{% static 'javascript/commentBar.js' %}"></script>
+
+{% endblock %}

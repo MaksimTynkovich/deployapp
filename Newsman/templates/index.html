@@ -1,0 +1,189 @@
+{% extends "base.html"%}
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/btnnext.css' %}">
+<!--<link rel="stylesheet" href="{% static 'css/sliderdeploy.css' %}/">-->
+{% endblock styles %}
+<h1>{{post.title}}</h1>
+
+{% block main %}
+{% if recommendations_posts %}
+
+<div class="slider-container">
+    <style>
+        .slider__item {
+            background: url('{% static 'images/banner.png' %}');
+        }
+    </style>
+    <div class="slider" data-slider="chiefslider">
+        <div class="slider__container">
+            <div class="slider__wrapper">
+                <div class="slider__items">
+                    {% for post in recommendations_posts %}
+                    <div class="slider__item">
+                    <div class="container">
+                        <div class="slider__content">
+                            <div class="slider-tag">
+                                {% if post.category.slug is None %}
+                                <a href="#" class="recommendations_tag">Другое</a>
+                                {% else %}
+                                <a href='{% url 'category' post.category.slug %}' class="post-tag">{{post.category}}</a>
+                                {% endif %}
+                            </div>
+                            <div class="slider-title">{{post.title}}</div>
+                            <div class="slider-btn">
+                                <a href="{{post.get_absolute_url}}" class="btn-next">
+                                    <div class="text-next">Читать статью</div>
+                                    <div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="17" viewBox="0 0 19 17" fill="none">
+                                            <path d="M0 8.5H17" stroke="#D93D3D" stroke-width="1.5"/>
+                                            <path d="M9.27246 16L16.9997 8.5L9.27246 1" stroke="#D93D3D" stroke-width="1.5"/>
+                                        </svg>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <a href="#" class="slider__control" data-slide="prev"></a>
+        <a href="#" class="slider__control" data-slide="next"></a>
+    </div>
+</div>
+<script src="{% static 'javascript/sliderDeploy.js' %}"></script>
+
+<script>
+    const $slider = document.querySelector('[data-slider="chiefslider"]');
+    const slider = new ChiefSlider($slider, {
+        loop: false
+    });
+</script>
+{% else %}
+<div style="padding-top: 40px;"></div>
+{% endif %}
+
+<div class="news_1">
+    <div class="container">
+        <hr style="margin-bottom: 40px">
+        <div class="links">
+            <a class="nav_link" href="">Астронавтика</a>
+            <a class="nav_link" href="">наука и космос</a>
+            <a class="nav_link" href="">Технологии</a>
+        </div>
+        <hr style="margin-top: 40px">
+
+        <div class="posts">
+            {% for post in posts_first %}
+            <div class="post-item">
+                <div class="post-img">
+                    <a href="{{post.get_absolute_url}}">
+                        {% if post.photo %}
+                        <img src="{{ post.photo.url }}" width="373" height="300" alt="...">
+                        {% else %}
+                        
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="post-info">
+                    {% if post.category.slug is None %}
+                    <a href="#" class="recommendations_tag">Другое</a>
+                    {% else %}
+                    <a href='{% url 'category' post.category.slug %}' class="post-tag">{{post.category}}</a>
+                    {% endif %}
+                    <div class="post-date">
+                        {% if post.time_create|date:"j m Y" == time %}
+                        Сегодня
+                        {% elif post.time_create|date:"j m Y" == day %}
+                        Вчера
+                        {% else %}
+                        {{post.time_create | date:"j"}} <span id="month">{{post.time_create | date:"E"}}</span>,
+                        {{post.time_create | date:"Y"}}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="post-title"><a href="{{post.get_absolute_url}}">{{post.title | truncatechars:74}}</a></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="recommendations">
+    <div class="container">
+        <div class="recommendations_inner">
+            <div class="recommendations_block">
+                {% for post in recommendations_posts %}
+                <div class="recommendations_item">
+                    <div class="recommendations_img">
+                        {% if post.photo %}
+                        <a href='{{post.get_absolute_url}}'><img src="{{ post.photo.url }}" width="167" height="116" alt="..."></a>
+                        {% else %}
+                            
+                        {% endif %}
+                    </div>
+                    <div class="recommendations_content">
+                        <div class="recommendations_info">
+                            <div class="recommendations_tag_wrapper">
+                                {% if post.category.slug is None %}
+                                <a href="#" class="recommendations_tag">Другое</a>
+                                {% else %}
+                                <a href="{% url 'category' post.category.slug %}" class="recommendations_tag">{{post.category}}</a>
+                                {% endif %}
+                            </div>
+                            <div class="recommendations_date">
+                                {% if post.time_create|date:"j m Y" == time %}
+                                Сегодня
+                                {% elif post.time_create|date:"j m Y" == day %}
+                                Вчера
+                                {% else %}
+                                {{post.time_create | date:"j"}} <span id="month">{{post.time_create | date:"E"}}</span>,
+                                {{post.time_create | date:"Y"}}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="recommendations_title"><a href="{{post.get_absolute_url}}">{{ post.title | truncatechars:80 }}</a></div>
+                    </div>
+                </div>
+                <hr style="border: 1px solid #BFC6CE; width: 787px;">
+                {% endfor %}
+            </div>
+            <div class="ad_block">
+                <div class="ad_img">
+                    <img src="{% static 'images/ad.png' %}" width="373" height="433" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="news">
+    <div class="container">
+        <div class="posts">
+            {% for post in posts_two %}
+            <div class="post-item">
+                <div class="post-img">
+                    <a href="{{post.get_absolute_url}}"><img src="{{ post.photo.url }}" width="373" height="300" alt="..."></a>
+                </div>
+                <div class="post-info">
+                    <a href='{% url 'category' post.category.slug %}' class="post-tag">{{post.category}}</a>
+                    <div class="post-date">
+                        {% if post.time_create|date:"j m Y" == time %}
+                        Сегодня
+                        {% elif post.time_create|date:"j m Y" == day %}
+                        Вчера
+                        {% else %}
+                        {{post.time_create | date:"j"}} <span id="month">{{post.time_create | date:"E"}}</span>,
+                        {{post.time_create | date:"Y"}}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="post-title"><a href="{{post.get_absolute_url}}">{{post.title | truncatechars:74}}</a></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

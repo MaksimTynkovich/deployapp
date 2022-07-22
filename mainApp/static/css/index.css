@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
+a{
+    text-decoration: none;
+    color: #000;
+}
+
+
+
+.links{
+    display: flex;
+    justify-content: space-around;
+}
+
+.nav_link{
+    font-family: 'Rubik';
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 130%;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #151515;
+}
+
+.news_1{
+    padding-top: 70px;
+}
+
+.recommendations{
+    margin-bottom: 100px;
+}
+
+.recommendations_inner{
+    display: flex;
+}
+
+.recommendations_block{
+    width: 70%;
+}
+
+.recommendations_item{
+    display: flex;
+    margin-bottom: 23px;
+    margin-top: 24px;
+}
+
+.recommendations_img{
+    margin-right: 40px;
+}
+
+.recommendations_info{
+    display: flex;
+}
+
+.recommendations_tag{
+    display: flex;
+    letter-spacing: 0.05em;
+    font-size: 12px;
+    background-color: #D93D3D;
+    color: #fff;
+    margin-right: 30px;
+    padding: 4px 8px;
+}
+
+hr-clear:nth-child(3n){
+    display: none;
+}
+
+.recommendations_date{
+    font-family: 'Exo 2.0';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 130%;
+}
+
+.recommendations_title{
+    margin-top: 26px;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 130%;
+    align-items: center;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.ad_img{
+    margin-top: 40px;
+}
+
+.posts{
+    margin-top: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.post-item{
+    width: 373px;
+    margin-bottom: 46px;
+}
+
+.post-item:nth-child(3n-1){
+    margin-left: 39px;
+    margin-right: 39px;
+}
+
+.post-info{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    align-items: flex-start;
+}
+
+.post-tag{
+    display: flex;
+    letter-spacing: 0.05em;
+    font-size: 12px;
+    background-color: #D93D3D;
+    color: #fff;
+    padding: 3px 10px;
+}
+
+.post-date{
+    font-family: 'Exo 2.0';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 130%;
+}
+
+#month{
+    text-transform: lowercase;
+}
+
+.post-title{
+    margin-top: 26px;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 130%;
+    align-items: center;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}

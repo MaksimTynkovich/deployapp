@@ -1,0 +1,42 @@
+{% extends "base.html"%}
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock styles %}
+<h1>{{post.title}}</h1>
+{% block main %}
+<div class="news_1">
+    <div class="container">
+        <div class="posts">
+            {% for post in news %}
+            <div class="post-item">
+                <div class="post-img">
+                    <a href="{{post.get_absolute_url}}">
+                        {% if post.photo %}
+                        <img src="{{ post.photo.url }}" width="373" height="300" alt="...">
+                        {% else %}
+                        <img src="{{ post.photo.url }}" width="373" height="300" alt="...">
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="post-info">
+                    <div class="post-tag">{{post.category}}</div>
+                    <div class="post-date">
+                        {% if post.time_create|date:"j m Y" == time %}
+                        Сегодня
+                        {% elif post.time_create|date:"j m Y" == day %}
+                        Вчера
+                        {% else %}
+                        {{post.time_create | date:"j"}} <span id="month">{{post.time_create | date:"M"}}</span>,
+                        {{post.time_create | date:"Y"}}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="post-title"><a href="{{post.get_absolute_url}}">{{post.title | truncatechars:74}}</a></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

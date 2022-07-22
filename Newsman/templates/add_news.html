@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Добавление поста
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% endblock styles %}
+
+{% block main %}
+<div class="container">
+<h1 style="padding-top: 200px">Создать пост</h1>
+{% if user.is_authenticated %}
+<form small mb-1 style="margin-top: 100px" action="{% url 'add_news' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <!--    {{ form.as_p }}-->
+    {{ form.media }}
+     <div class="mb-5">
+         <div style="margin-bottom: 10px; font-size: 18px; margin-left: 4px; font-weight: bold">Заголовок</div>
+        <label for="{{ form.title.id_for_label }}" class="form-label"></label>
+        {{ form.title }}
+     <div class="invalid-feedback">
+         {{form.title.errors}}
+     </div>
+      </div>
+
+    <label class="form-check" for="l_box1">
+        <input class="form-check-input" type="checkbox" name="display_type" value="locationbox" id="l_box1">Скрыть автора</input>
+    </label>
+
+    <div class="mb-3">
+        <label for="{{ form.content.id_for_label }}" class="form-label"></label>
+        {{ form.content }}
+     <div class="invalid-feedback">
+         {{ form.content.errors }}
+     </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="{{ form.photo.id_for_label }}" class="form-label">Изображение</label>
+        {{ form.photo }}
+     <div class="invalid-feedback">
+         {{ form.photo.errors }}
+     </div>
+      </div>
+
+
+      <div class="mb-3">
+        <label for="{{ form.category.id_for_label }}" class="form-label">Категория</label>
+        {{ form.category }}
+     <div class="invalid-feedback">
+         {{ form.category.errors }}
+     </div>
+      </div>
+    <button type="submit" class="btn btn-dark btn-block">Опубликовать</button>
+</form>
+{% else %}
+<div style="margin-top: 100px;">Пройдите регистрацию</div>
+</div>
+{% endif %}
+{% endblock %}
